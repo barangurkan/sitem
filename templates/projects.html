@@ -1,0 +1,311 @@
+{% extends "base.html" %}
+
+{% block title %}Projeler - Baran Gürkan{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">
+                    Projelerim
+                </h1>
+                <p class="lead mb-4">
+                    Yapay zeka ve backend geliştirme alanlarında çalıştığım projeler. 
+                    Her proje, modern teknolojiler ve yenilikçi yaklaşımlarla geliştirildi.
+                </p>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="bg-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 300px; height: 300px;">
+                    <i class="fas fa-code" style="font-size: 8rem; color: var(--primary-color);"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Filter Section -->
+<section class="section">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold mb-3">Projelerim</h2>
+                <p class="lead text-muted">
+                    Kategorilere göre filtreleyebilirsiniz
+                </p>
+            </div>
+        </div>
+        
+        <!-- Filter Buttons -->
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-primary active" data-filter="all">
+                        Tümü
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" data-filter="AI">
+                        <i class="fas fa-robot me-2"></i>Yapay Zeka
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" data-filter="Backend">
+                        <i class="fas fa-server me-2"></i>Backend
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" data-filter="Full-Stack">
+                        <i class="fas fa-layer-group me-2"></i>Full-Stack
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" data-filter="Data">
+                        <i class="fas fa-database me-2"></i>Veri Bilimi
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Projects Grid -->
+        <div class="row g-4" id="projects-grid">
+            {% for project in projects %}
+            <div class="col-lg-6 col-xl-4 project-item" data-category="{{ project.category }}">
+                <div class="card h-100">
+                    {% if project.image_url %}
+                    <img src="{{ project.image_url }}" class="card-img-top" alt="{{ project.title }}" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <i class="fas fa-code" style="font-size: 4rem; color: var(--text-secondary);"></i>
+                    </div>
+                    {% endif %}
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-primary bg-gradient rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                <i class="fas fa-{{ 'robot' if project.category == 'AI' else 'server' if project.category == 'Backend' else 'layer-group' if project.category == 'Full-Stack' else 'database' }} text-white"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title mb-1">{{ project.title }}</h5>
+                                <small class="text-muted">{{ project.category }}</small>
+                            </div>
+                        </div>
+                        
+                        <p class="card-text text-muted mb-3">
+                            {{ project.description[:150] }}{% if project.description|length > 150 %}...{% endif %}
+                        </p>
+                        
+                        <div class="mb-3">
+                            {% for tech in project.technologies.split(', ') %}
+                            <span class="tech-badge">{{ tech }}</span>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            {% if project.github_url %}
+                            <a href="{{ project.github_url }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                <i class="fab fa-github me-1"></i>GitHub
+                            </a>
+                            {% endif %}
+                            {% if project.live_url %}
+                            <a href="{{ project.live_url }}" target="_blank" class="btn btn-primary btn-sm">
+                                <i class="fas fa-external-link-alt me-1"></i>Demo
+                            </a>
+                            {% endif %}
+                        </div>
+                        
+                        {% if project.stars or project.forks %}
+                        <div class="mt-2">
+                            {% if project.stars %}
+                            <small class="text-muted me-3">
+                                <i class="fas fa-star text-warning"></i> {{ project.stars }}
+                            </small>
+                            {% endif %}
+                            {% if project.forks %}
+                            <small class="text-muted">
+                                <i class="fas fa-code-branch text-info"></i> {{ project.forks }}
+                            </small>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- No Projects Message -->
+        <div class="text-center mt-5" id="no-projects" style="display: none;">
+            <div class="card">
+                <div class="card-body p-5">
+                    <i class="fas fa-search" style="font-size: 4rem; color: var(--text-secondary);"></i>
+                    <h4 class="mt-3">Proje Bulunamadı</h4>
+                    <p class="text-muted">Seçtiğiniz kategoride henüz proje bulunmuyor.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Project Section -->
+<section class="section bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold mb-3">Öne Çıkan Proje</h2>
+                <p class="lead text-muted">
+                    En son tamamladığım proje
+                </p>
+            </div>
+        </div>
+        
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body p-5">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="bg-primary bg-gradient rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
+                                <i class="fas fa-robot text-white" style="font-size: 1.5rem;"></i>
+                            </div>
+                            <div>
+                                <h3 class="mb-1">AI Chatbot Projesi</h3>
+                                <p class="text-muted mb-0">Yapay Zeka</p>
+                            </div>
+                        </div>
+                        
+                        <p class="lead mb-4">
+                            Python ve TensorFlow kullanarak geliştirdiğim yapay zeka tabanlı chatbot. 
+                            Doğal dil işleme ve makine öğrenmesi teknikleri kullanılarak oluşturuldu.
+                        </p>
+                        
+                        <div class="mb-4">
+                            <h5 class="mb-3">Özellikler:</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Doğal dil işleme</li>
+                                <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Makine öğrenmesi</li>
+                                <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Gerçek zamanlı yanıt</li>
+                                <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Web arayüzü</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">TensorFlow</span>
+                            <span class="tech-badge">NLP</span>
+                            <span class="tech-badge">Flask</span>
+                            <span class="tech-badge">HTML/CSS</span>
+                        </div>
+                        
+                        <div class="d-flex gap-3">
+                            <a href="https://github.com/barangurkan/ai-chatbot" target="_blank" class="btn btn-primary">
+                                <i class="fab fa-github me-2"></i>GitHub'da Gör
+                            </a>
+                            <a href="https://ai-chatbot-demo.herokuapp.com" target="_blank" class="btn btn-outline-primary">
+                                <i class="fas fa-external-link-alt me-2"></i>Canlı Demo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h4 class="mb-4">Proje Detayları</h4>
+                        
+                        <div class="mb-4">
+                            <h6 class="text-primary">Problemi Çözüm</h6>
+                            <p class="text-muted">
+                                Müşteri hizmetleri süreçlerini otomatikleştirmek ve 7/24 destek sağlamak 
+                                için yapay zeka tabanlı chatbot geliştirdim.
+                            </p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h6 class="text-primary">Teknik Yaklaşım</h6>
+                            <p class="text-muted">
+                                TensorFlow ve Transformers kütüphanesi kullanarak fine-tuning yaptım. 
+                                Flask ile RESTful API oluşturdum ve React ile frontend geliştirdim.
+                            </p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h6 class="text-primary">Sonuçlar</h6>
+                            <p class="text-muted">
+                                %85 doğruluk oranı ile müşteri sorularını yanıtlayabilen sistem. 
+                                Müşteri memnuniyetinde %40 artış sağladı.
+                            </p>
+                        </div>
+                        
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <h4 class="text-primary mb-1">85%</h4>
+                                <small class="text-muted">Doğruluk</small>
+                            </div>
+                            <div class="col-4">
+                                <h4 class="text-primary mb-1">24/7</h4>
+                                <small class="text-muted">Kullanılabilirlik</small>
+                            </div>
+                            <div class="col-4">
+                                <h4 class="text-primary mb-1">40%</h4>
+                                <small class="text-muted">Memnuniyet Artışı</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2 class="display-5 fw-bold mb-4">Projeniz için yardıma mı ihtiyacınız var?</h2>
+                <p class="lead text-muted mb-4">
+                    Benzer bir proje geliştirmek istiyorsanız veya işbirliği yapmak istiyorsanız, 
+                    benimle iletişime geçebilirsiniz.
+                </p>
+                <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-envelope me-2"></i>İletişime Geç
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filterButtons = document.querySelectorAll('[data-filter]');
+    const projectItems = document.querySelectorAll('.project-item');
+    const noProjectsMessage = document.getElementById('no-projects');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const filter = this.getAttribute('data-filter');
+            
+            // Remove active class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            let visibleCount = 0;
+            
+            projectItems.forEach(item => {
+                const category = item.getAttribute('data-category');
+                
+                if (filter === 'all' || category === filter) {
+                    item.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            // Show/hide no projects message
+            if (visibleCount === 0) {
+                noProjectsMessage.style.display = 'block';
+            } else {
+                noProjectsMessage.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
+{% endblock %} 

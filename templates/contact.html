@@ -1,0 +1,348 @@
+{% extends "base.html" %}
+
+{% block title %}İletişim - Baran Gürkan{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">
+                    İletişim
+                </h1>
+                <p class="lead mb-4">
+                    Projeleriniz için yardıma mı ihtiyacınız var? 
+                    Benimle iletişime geçin, birlikte çalışalım.
+                </p>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="bg-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 300px; height: 300px;">
+                    <i class="fas fa-envelope" style="font-size: 8rem; color: var(--primary-color);"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="row g-4">
+                    <!-- Contact Form -->
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-body p-5">
+                                <h3 class="mb-4">Mesaj Gönderin</h3>
+                                
+                                <form id="contactForm">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label for="name" class="form-label">Ad Soyad *</label>
+                                            <input type="text" class="form-control" id="name" name="name" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="email" class="form-label">E-posta *</label>
+                                            <input type="email" class="form-control" id="email" name="email" required>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="subject" class="form-label">Konu</label>
+                                            <select class="form-select" id="subject" name="subject">
+                                                <option value="">Seçiniz...</option>
+                                                <option value="project">Proje İşbirliği</option>
+                                                <option value="consulting">Danışmanlık</option>
+                                                <option value="freelance">Freelance İş</option>
+                                                <option value="question">Soru</option>
+                                                <option value="other">Diğer</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="message" class="form-label">Mesajınız *</label>
+                                            <textarea class="form-control" id="message" name="message" rows="6" required placeholder="Projeniz hakkında detayları paylaşın..."></textarea>
+                                        </div>
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-primary btn-lg w-100">
+                                                <i class="fas fa-paper-plane me-2"></i>Mesaj Gönder
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                
+                                <!-- Success/Error Messages -->
+                                <div id="successMessage" class="alert alert-success mt-3" style="display: none;">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    Mesajınız başarıyla gönderildi! En kısa sürede size dönüş yapacağım.
+                                </div>
+                                
+                                <div id="errorMessage" class="alert alert-danger mt-3" style="display: none;">
+                                    <i class="fas fa-exclamation-circle me-2"></i>
+                                    Bir hata oluştu. Lütfen tekrar deneyin.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact Info -->
+                    <div class="col-lg-4">
+                        <div class="card h-100">
+                            <div class="card-body p-4">
+                                <h4 class="mb-4">İletişim Bilgileri</h4>
+                                
+                                <div class="mb-4">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="bg-primary bg-gradient rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                            <i class="fas fa-envelope text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">E-posta</h6>
+                                            <p class="text-muted mb-0">baran@example.com</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="bg-primary bg-gradient rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                            <i class="fas fa-map-marker-alt text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">Konum</h6>
+                                            <p class="text-muted mb-0">İstanbul, Türkiye</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="bg-primary bg-gradient rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                            <i class="fas fa-clock text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">Çalışma Saatleri</h6>
+                                            <p class="text-muted mb-0">Pazartesi - Cuma: 09:00 - 18:00</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <hr class="my-4">
+                                
+                                <h6 class="mb-3">Sosyal Medya</h6>
+                                <div class="d-flex gap-2">
+                                    <a href="https://github.com/barangurkan" target="_blank" class="btn btn-outline-dark">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                    <a href="https://linkedin.com/in/barangurkan" target="_blank" class="btn btn-outline-primary">
+                                        <i class="fab fa-linkedin"></i>
+                                    </a>
+                                    <a href="https://twitter.com/barangurkan" target="_blank" class="btn btn-outline-info">
+                                        <i class="fab fa-twitter"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="section bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold mb-3">Hizmetlerim</h2>
+                <p class="lead text-muted">
+                    Size nasıl yardımcı olabilirim?
+                </p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 text-center p-4">
+                    <div class="card-body">
+                        <div class="bg-primary bg-gradient rounded-circle d-inline-flex align-items-center justify-content-center mb-4" style="width: 80px; height: 80px;">
+                            <i class="fas fa-robot text-white" style="font-size: 2rem;"></i>
+                        </div>
+                        <h4 class="card-title mb-3">AI Projeleri</h4>
+                        <p class="card-text text-muted">
+                            Machine Learning, Deep Learning ve NLP projeleri geliştiriyorum. 
+                            Veri analizi ve model eğitimi konularında destek sağlıyorum.
+                        </p>
+                        <div class="mt-3">
+                            <span class="tech-badge">TensorFlow</span>
+                            <span class="tech-badge">PyTorch</span>
+                            <span class="tech-badge">NLP</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 text-center p-4">
+                    <div class="card-body">
+                        <div class="bg-secondary bg-gradient rounded-circle d-inline-flex align-items-center justify-content-center mb-4" style="width: 80px; height: 80px;">
+                            <i class="fas fa-server text-white" style="font-size: 2rem;"></i>
+                        </div>
+                        <h4 class="card-title mb-3">Backend Geliştirme</h4>
+                        <p class="card-text text-muted">
+                            Ölçeklenebilir backend sistemleri tasarlıyorum. 
+                            API geliştirme ve veritabanı optimizasyonu yapıyorum.
+                        </p>
+                        <div class="mt-3">
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">Django</span>
+                            <span class="tech-badge">Flask</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 text-center p-4">
+                    <div class="card-body">
+                        <div class="bg-info bg-gradient rounded-circle d-inline-flex align-items-center justify-content-center mb-4" style="width: 80px; height: 80px;">
+                            <i class="fas fa-users text-white" style="font-size: 2rem;"></i>
+                        </div>
+                        <h4 class="card-title mb-3">Danışmanlık</h4>
+                        <p class="card-text text-muted">
+                            Teknoloji seçimi ve proje planlaması konularında danışmanlık veriyorum. 
+                            En iyi pratikleri paylaşıyorum.
+                        </p>
+                        <div class="mt-3">
+                            <span class="tech-badge">Strateji</span>
+                            <span class="tech-badge">Mimari</span>
+                            <span class="tech-badge">Optimizasyon</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="section">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold mb-3">Sık Sorulan Sorular</h2>
+                <p class="lead text-muted">
+                    En çok sorulan sorular ve cevapları
+                </p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                                Hangi teknolojilerde uzmanlaştınız?
+                            </button>
+                        </h2>
+                        <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Python ekosistemi üzerinde çalışıyorum. TensorFlow, PyTorch, Django, Flask gibi teknolojilerde deneyimim var. 
+                                Ayrıca veri bilimi araçları (Pandas, NumPy, Scikit-learn) ve DevOps araçları (Docker, Git) konularında da uzmanım.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq2">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                                Proje süreleri ne kadar?
+                            </button>
+                        </h2>
+                        <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Proje süreleri projenin kapsamına göre değişiyor. Küçük projeler 1-2 hafta, 
+                                orta ölçekli projeler 1-2 ay, büyük projeler ise 3-6 ay sürebiliyor. 
+                                Detaylı analiz sonrası kesin süre belirleniyor.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq3">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                                Uzaktan çalışma yapıyor musunuz?
+                            </button>
+                        </h2>
+                        <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Evet, uzaktan çalışma konusunda deneyimim var. Video konferans, 
+                                proje yönetim araçları ve düzenli iletişim ile etkili uzaktan çalışma sağlıyorum.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq4">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                                Fiyatlandırma nasıl yapılıyor?
+                            </button>
+                        </h2>
+                        <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Fiyatlandırma projenin kapsamı, süresi ve karmaşıklığına göre belirleniyor. 
+                                Saatlik, günlük veya proje bazlı fiyatlandırma seçenekleri mevcut. 
+                                Detaylı analiz sonrası net fiyat veriyorum.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const contactForm = document.getElementById('contactForm');
+    const successMessage = document.getElementById('successMessage');
+    const errorMessage = document.getElementById('errorMessage');
+    
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            subject: document.getElementById('subject').value,
+            message: document.getElementById('message').value
+        };
+        
+        // Hide previous messages
+        successMessage.style.display = 'none';
+        errorMessage.style.display = 'none';
+        
+        // Send form data to backend
+        fetch('/api/contact', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                successMessage.style.display = 'block';
+                contactForm.reset();
+            } else {
+                errorMessage.style.display = 'block';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            errorMessage.style.display = 'block';
+        });
+    });
+});
+</script>
+{% endblock %} 

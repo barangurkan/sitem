@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Panel - Baran Gürkan{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">
+                    Admin Panel
+                </h1>
+                <p class="lead mb-4">
+                    Projeleri ve demo linklerini yönet
+                </p>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="bg-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 300px; height: 300px;">
+                    <i class="fas fa-cog" style="font-size: 8rem; color: var(--primary-color);"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Admin Actions -->
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card">
+                    <div class="card-body p-5">
+                        <h3 class="mb-4">GitHub Senkronizasyon</h3>
+                        
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="card h-100">
+                                    <div class="card-body text-center p-4">
+                                        <i class="fas fa-sync-alt text-primary mb-3" style="font-size: 3rem;"></i>
+                                        <h5>GitHub'dan Projeleri Çek</h5>
+                                        <p class="text-muted">GitHub'dan en güncel projeleri senkronize et</p>
+                                        <a href="/admin/sync-github" class="btn btn-primary">
+                                            <i class="fas fa-download me-2"></i>Senkronize Et
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="card h-100">
+                                    <div class="card-body text-center p-4">
+                                        <i class="fas fa-database text-success mb-3" style="font-size: 3rem;"></i>
+                                        <h5>Veritabanını Başlat</h5>
+                                        <p class="text-muted">Yeni veritabanı oluştur ve tabloları hazırla</p>
+                                        <a href="/admin/init" class="btn btn-success">
+                                            <i class="fas fa-database me-2"></i>Başlat
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr class="my-5">
+                        
+                        <h3 class="mb-4">Demo Link Yönetimi</h3>
+                        
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Proje Adı</th>
+                                        <th>GitHub URL</th>
+                                        <th>Demo URL</th>
+                                        <th>Durum</th>
+                                        <th>İşlemler</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="projects-table">
+                                    <!-- JavaScript ile doldurulacak -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <h5>Demo Link Ekle/Düzenle</h5>
+                            <form id="demo-link-form">
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Proje Adı</label>
+                                        <select class="form-select" id="project-select" required>
+                                            <option value="">Seçiniz...</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Demo URL</label>
+                                        <input type="url" class="form-control" id="demo-url" placeholder="https://example.com" required>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="form-label">&nbsp;</label>
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fas fa-save me-1"></i>Kaydet
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    loadProjects();
+    
+    // Demo link formu
+    document.getElementById('demo-link-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        saveDemoLink();
+    });
+});
+
+function loadProjects() {
+    fetch('/api/projects')
+        .then(response => response.json())
+        .then(projects => {
+            const tableBody = document.getElementById('projects-table');
+            const projectSelect = document.getElementById('project-select');
+            
+            tableBody.innerHTML = '';
+            projectSelect.innerHTML = '<option value="">Seçiniz...</option>';
+            
+            projects.forEach(project => {
+                // Tablo satırı
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${project.title}</td>
+                    <td><a href="${project.github_url}" target="_blank">${project.github_url}</a></td>
+                    <td>${project.live_url ? `<a href="${project.live_url}" target="_blank">${project.live_url}</a>` : 'Demo yok'}</td>
+                    <td>
+                        <span class="badge ${project.live_url ? 'bg-success' : 'bg-warning'}">
+                            ${project.live_url ? 'Aktif' : 'Demo Yok'}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="editDemoLink('${project.github_url}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+                
+                // Select option
+                const option = document.createElement('option');
+                option.value = project.github_url;
+                option.textContent = project.title;
+                projectSelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Hata:', error));
+}
+
+function saveDemoLink() {
+    const projectUrl = document.getElementById('project-select').value;
+    const demoUrl = document.getElementById('demo-url').value;
+    
+    if (!projectUrl || !demoUrl) {
+        alert('Lütfen tüm alanları doldurun!');
+        return;
+    }
+    
+    fetch('/api/update-demo-link', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            github_url: projectUrl,
+            demo_url: demoUrl
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Demo link başarıyla güncellendi!');
+            loadProjects();
+            document.getElementById('demo-link-form').reset();
+        } else {
+            alert('Hata: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Hata:', error);
+        alert('Bir hata oluştu!');
+    });
+}
+
+function editDemoLink(githubUrl) {
+    document.getElementById('project-select').value = githubUrl;
+    document.getElementById('demo-url').focus();
+}
+</script>
+{% endblock %} 
